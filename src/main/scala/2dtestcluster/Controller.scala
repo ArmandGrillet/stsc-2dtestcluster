@@ -85,7 +85,10 @@ class Controller(private val root: AnchorPane, private val observations: TextFie
 
             val p21 = f2.subplot(0)
             p21.title = "Clusters"
-            val colors = List(Color.ORANGE, Color.BLUE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
+            var colors = List(Color.ORANGE, Color.BLUE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
+            if (result(0) == 1) {
+                colors = List(Color.BLUE, Color.ORANGE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
+            }
             p21 += scatter(samplesMatrix(::, 0), samplesMatrix(::, 1), {(_:Int) => 0.03}, {(pos:Int) => colors(result(pos))}) // Display the observations.
             clusters.image = SwingFXUtils.toFXImage(imageToFigure(f2), null)
         }
