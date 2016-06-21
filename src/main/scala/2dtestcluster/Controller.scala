@@ -28,13 +28,15 @@ import java.io.File
 import stsc._
 
 @sfxml
-class Controller(private val root: AnchorPane, private val observations: TextField, private val distance: TextField, val dataset: ImageView, val clusters: ImageView) {
+class Controller(private val root: AnchorPane, private val observations: TextField, private val distance: TextField, private val minClusters: TextField, private val maxClusters: TextField, val dataset: ImageView, val clusters: ImageView) {
 
     private var displayedDataset = DenseMatrix.zeros[Double](0, 0)
 
     def run(event: ActionEvent) {
         var observationsInput = toInt(observations.text.value).getOrElse(0)
         var distanceInput = toDouble(distance.text.value).getOrElse(0.0)
+        var minClustersInput = toInt(minClusters.text.value).getOrElse(2)
+        var maxClustersInput = toInt(maxClusters.text.value).getOrElse(2)
         var ready = true
 
         if (ready && observationsInput < 10) {
@@ -44,6 +46,16 @@ class Controller(private val root: AnchorPane, private val observations: TextFie
 
         if (ready && distanceInput < 0) {
             showAlert("Distance has to be positive", "The distance between the two dataset has to be positive.")
+            ready = false
+        }
+
+        if (ready && minClustersInput < 0) {
+            showAlert("The minimum number of clusters has to be positive", "The minimum number of computed clusters must be positive.")
+            ready = false
+        }
+
+        if (ready && maxClustersInput < minClustersInput) {
+            showAlert("The maximum number of clusters has to be more than the minimum", "The maximum number of computed clusters must be more than " + minClustersInput + ".")
             ready = false
         }
 
@@ -81,8 +93,7 @@ class Controller(private val root: AnchorPane, private val observations: TextFie
             dataset.image = SwingFXUtils.toFXImage(imageToFigure(f1), null)
 
             val samplesMatrix = DenseMatrix.vertcat(sample1, sample2)
-            val result = Algorithm.cluster(samplesMatrix, 2, 2)._2
-
+            val result = Algorithm.cluster(samplesMatrix, minClustersInput, maxClustersInput)._2
             val p21 = f2.subplot(0)
             p21.title = "Clusters"
             var colors = List(Color.ORANGE, Color.BLUE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
