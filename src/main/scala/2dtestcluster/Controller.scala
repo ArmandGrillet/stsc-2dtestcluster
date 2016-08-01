@@ -59,6 +59,11 @@ class Controller(private val root: AnchorPane, private val observations: TextFie
             ready = false
         }
 
+        if (ready && maxClustersInput > 6) {
+            showAlert("The maximum number of clusters has to be less than 7", "The maximum number of clusters must be less than 7.")
+            ready = false
+        }
+
         if (ready) {
             val f1 = Figure()
             f1.visible = false
@@ -87,20 +92,20 @@ class Controller(private val root: AnchorPane, private val observations: TextFie
                 sample2(i, 1) = sample2Vector(i)(1)
             }
 
-            p1 += scatter(sample1(::, 0), sample1(::, 1), {(_:Int) => 0.03}, {(pos:Int) => Color.ORANGE})
-            p1 += scatter(sample2(::, 0), sample2(::, 1), {(_:Int) => 0.03}, {(pos:Int) => Color.BLUE})
+            p1 += scatter(sample1(::, 0), sample1(::, 1), {(_:Int) => 0.05}, {(pos:Int) => Color.ORANGE})
+            p1 += scatter(sample2(::, 0), sample2(::, 1), {(_:Int) => 0.05}, {(pos:Int) => Color.BLUE})
 
             dataset.image = SwingFXUtils.toFXImage(imageToFigure(f1), null)
 
             val samplesMatrix = DenseMatrix.vertcat(sample1, sample2)
-            val result = Algorithm.cluster(samplesMatrix, minClustersInput, maxClustersInput)._2
+            val result = Algorithm.cluster(samplesMatrix, minClustersInput, maxClustersInput)._3
             val p21 = f2.subplot(0)
             p21.title = "Clusters"
             var colors = List(Color.ORANGE, Color.BLUE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
             if (result(0) == 1) {
                 colors = List(Color.BLUE, Color.ORANGE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
             }
-            p21 += scatter(samplesMatrix(::, 0), samplesMatrix(::, 1), {(_:Int) => 0.03}, {(pos:Int) => colors(result(pos))}) // Display the observations.
+            p21 += scatter(samplesMatrix(::, 0), samplesMatrix(::, 1), {(_:Int) => 0.05}, {(pos:Int) => colors(result(pos))}) // Display the observations.
             clusters.image = SwingFXUtils.toFXImage(imageToFigure(f2), null)
         }
     }

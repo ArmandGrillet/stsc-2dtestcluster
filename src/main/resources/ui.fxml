@@ -27,7 +27,7 @@
       </ImageView>
       <Label layoutX="626.0" layoutY="604.0" text="Min. number of clusters:" />
       <TextField fx:id="minClusters" alignment="CENTER_RIGHT" layoutX="784.0" layoutY="599.0" prefHeight="27.0" prefWidth="32.0" text="2" />
-      <TextField fx:id="maxClusters" alignment="CENTER_RIGHT" layoutX="989.0" layoutY="599.0" prefHeight="27.0" prefWidth="32.0" text="2" />
+      <TextField fx:id="maxClusters" alignment="CENTER_RIGHT" layoutX="989.0" layoutY="599.0" prefHeight="27.0" prefWidth="32.0" text="6" />
       <Label layoutX="831.0" layoutY="604.0" text="Max. number of clusters:" />
    </children>
 </AnchorPane>
