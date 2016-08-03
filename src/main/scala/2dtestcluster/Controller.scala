@@ -25,7 +25,7 @@ import breeze.linalg._
 import breeze.stats.distributions.MultivariateGaussian
 import breeze.plot._
 import java.io.File
-import stsc._
+import stsc.STSC
 
 @sfxml
 class Controller(private val root: AnchorPane, private val observations: TextField, private val distance: TextField, private val minClusters: TextField, private val maxClusters: TextField, val dataset: ImageView, val clusters: ImageView) {
@@ -98,7 +98,7 @@ class Controller(private val root: AnchorPane, private val observations: TextFie
             dataset.image = SwingFXUtils.toFXImage(imageToFigure(f1), null)
 
             val samplesMatrix = DenseMatrix.vertcat(sample1, sample2)
-            val result = Algorithm.cluster(samplesMatrix, minClustersInput, maxClustersInput)._3
+            val result = STSC.cluster(samplesMatrix, minClustersInput, maxClustersInput)._3
             val p21 = f2.subplot(0)
             p21.title = "Clusters"
             var colors = List(Color.ORANGE, Color.BLUE, Color.GREEN, Color.BLACK, Color.MAGENTA, Color.CYAN, Color.YELLOW)
